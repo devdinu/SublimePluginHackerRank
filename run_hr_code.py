@@ -7,8 +7,10 @@ import sys
 import re
 import random
 
+
 def debug(*args):
-	print(args, sys.stderr)
+    print(args, sys.stderr)
+
 
 class HackerRankConfig:
     compile_tests_url = "https://www.hackerrank.com/rest/contests/master/challenges/simple-array-sum/compile_tests"
@@ -16,6 +18,11 @@ class HackerRankConfig:
 
     def get_tests_result_url(uid):
         return HackerRankConfig.compile_tests_url+"/"+str(uid)
+
+    def get_user_cookie():
+        cookie = sublime.load_settings("HackerRank.sublime-settings").get("cookie")
+        debug("cookie", cookie)
+        return Utility.construct_cookie(cookie)
 
 
 class Utility:
@@ -37,13 +44,13 @@ class HackerRank:
         strvalues = {
             "code": code, "language": "python3", "customtestcase": "false"}
         postdata = urllib.parse.urlencode(strvalues).encode('utf-8')
-        user_cookie = "parse=cookie"
         request = urllib.request.Request(
             HackerRankConfig.compile_tests_url, data=postdata)
         req = urllib.request.urlopen(request)
         return req.read().decode('utf-8')
 
     def get_status(self, u_id):
+        cookie = HackerRankConfig.get_user_cookie()
         get_params = urllib.parse.urlencode(
             {'_': Utility.get_random_number()}).encode('utf-8')
         url = HackerRankConfig.get_tests_result_url(u_id)
