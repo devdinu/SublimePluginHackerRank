@@ -1,3 +1,6 @@
+# sys.path.append("/Users/dineshkumar/.pyenv/versions/python3/lib/python3.4/site-packages")
+import requests
+from http.cookiejar import CookieJar, DefaultCookiePolicy
 import sublime
 import sublime_plugin
 import urllib.request
@@ -6,7 +9,6 @@ import json
 import sys
 import re
 import random
-import http.cookiejar
 
 
 def debug(*args):
@@ -15,13 +17,13 @@ def debug(*args):
 
 class HackerRankConfig:
     compile_tests_url = "https://www.hackerrank.com/rest/contests/master/challenges/simple-array-sum/compile_tests"
-    user_defined_cookie = sublime.load_settings("HackerRank.sublime-settings").get("cookie")
+    user_defined_cookie = sublime.load_settings("HackerRank.sublime-settings").get("Cookie")
     total_random_digits = 17
 
+    def get_tests_status_params(): return {'_': "39716395733237807" }# Utility.get_random_number()}
+
     def get_tests_result_url(uid):
-        get_params = urllib.parse.urlencode({'_': Utility.get_random_number()})
-        debug("url par: ", get_params)
-        return HackerRankConfig.compile_tests_url + "/" + str(uid) + "?" + get_params
+        return HackerRankConfig.compile_tests_url + "/" + str(uid)
 
     def get_user_cookie_as_dict():
         cookie = HackerRankConfig.user_defined_cookie
@@ -29,10 +31,6 @@ class HackerRankConfig:
 
 
 class Utility:
-
-    def get_cookie_from_jar():
-        pass
-        # response.headers.add_header('Set-Cookie', HackerRankConfig.get_user_cookie_as_dict())
 
     def construct_cookie(user_cookie):
         cookie = dict()
@@ -48,24 +46,20 @@ class Utility:
 class HackerRank:
 
     def send_code_to_server(self, code):
+        debug('sending code', code)
         strvalues = {"code": code, "language": "python3", "customtestcase": "false"}
         postdata = urllib.parse.urlencode(strvalues).encode('utf-8')
         request = urllib.request.Request(HackerRankConfig.compile_tests_url, data=postdata)
         req = urllib.request.urlopen(request)
         return req.read().decode('utf-8')
 
-    def get_status(self, u_id):
+    def get_status_with_requests(self, u_id):
+        debug("id:-{0}".format(u_id))
+        u_id = 35002075
         url = HackerRankConfig.get_tests_result_url(u_id)
-        debug("Trying to send requ:", u_id, " url: ", url)
-        request = urllib.request.Request(url)
-        opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()))
-        # cookie = HackerRankConfig.user_defined_cookie
-        # request.add_header('Set-Cookie', cookie)
-        # req = urllib.request.urlopen(request)
-        debug("opener", request.has_header('cookie'))
-        # print(req.read(x).decode('utf-8'))
-        print(opener.open(url).read())
-        debug("opener", request.has_header('cookie'))
+        params = HackerRankConfig.get_tests_status_params()
+        response = requests.get(url, params = params, headers={"Cookie": HackerRankConfig.user_defined_cookie})
+        print(response.text)
 
 
 class RuncodeCommand(sublime_plugin.WindowCommand):
@@ -82,4 +76,4 @@ class RuncodeCommand(sublime_plugin.WindowCommand):
         code = c_view.substr(sublime.Region(0, c_view.size()))
         hr = HackerRank()
         compile_response = hr.send_code_to_server(code)
-        hr.get_status(self.get_id(compile_response))
+        hr.get_status_with_requests(self.get_id(compile_response))
