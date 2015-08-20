@@ -16,10 +16,17 @@ Run code from Sublime Text for HackerRank problems.
 
 ```json
 {
-	"Cookie" : "cookie-copied-from-login-response"
-	"CSRF-Token" : "CSRF-Token-To-Authenticate",
-	"Language" : "python",
-	"Debug" : true
-	"Problem" : "https://www.hackerrank.com/rest/contests/master/challenges/simple-array-sum/compile_tests"	
+	"Cookie" 		: "cookie-copied-from-login-response",
+	"CSRF-Token"	: "CSRF-Token-To-Authenticate",
+	"Language"		: "python",
+	"Debug"			: true,
+	"Problem"		: "https://www.hackerrank.com/rest/contests/master/challenges/simple-array-sum/compile_tests"	
 }
 ```
+
+# Compiling the code
+
+For Compiling and Checking Status via sublime, add the following to the Default (OS).sublime-keymap or Custom.sublime.keymap file.
+
+ `{ "keys": ["super+shift+r"], "command": "runcode" }`
+
