@@ -7,7 +7,7 @@ import json
 import sys
 import re
 import random
-
+import time
 
 def debug(*args):
     if HackerRankConfig.debug: print(args, sys.stderr)
@@ -16,7 +16,7 @@ def debug(*args):
 class HackerRankConfig:
     hr_settings = sublime.load_settings("HackerRank.sublime-settings")
     debug = hr_settings.get("Debug")
-    compile_tests_url = "https://www.hackerrank.com/rest/contests/master/challenges/simple-array-sum/compile_tests"
+    compile_tests_url = hr_settings.get("Problem") 
     user_defined_cookie = hr_settings.get("Cookie")
     csrf_token = hr_settings.get("CSRF-Token")
     total_random_digits = 17
@@ -78,7 +78,7 @@ class RuncodeCommand(sublime_plugin.WindowCommand):
         return resp_dict['model']['id']
 
     def run(self, **kwargs):
-        print("\n" * 100, "Running code in hackerrank...")
+        print("\n" * 100, "........Running code in hackerrank........")
         self.window.run_command("show_panel", {"panel": "console", "toggle": True})
         c_view = self.window.active_view()
         code = c_view.substr(sublime.Region(0, c_view.size()))
@@ -86,5 +86,6 @@ class RuncodeCommand(sublime_plugin.WindowCommand):
         compile_response = hr.send_code_to_server(code, HackerRankConfig.language)
         debug('compile_response: ', compile_response)
         result = hr.get_status_with_requests(self.get_id(compile_response))
+        time.sleep(7)
         debug("result: ", result)
         Utility.display(result)

@@ -1,3 +1,7 @@
 {
-	"Cookie" : "Your-Cookie"
+	"Cookie" : "Your-Cookie",
+	"CSRF-Token" : "Your-Token",
+	"Language" : "python", // Your Programming Language Default: python
+	"Problem" : "https://www.hackerrank.com/rest/contests/master/challenges/simple-array-sum/compile_tests",
+	"Debug" : true // whether to display debug statements
 }
