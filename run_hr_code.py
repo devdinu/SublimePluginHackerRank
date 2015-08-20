@@ -1,5 +1,4 @@
 from requests import requests
-from http.cookiejar import CookieJar, DefaultCookiePolicy
 import sublime
 import sublime_plugin
 import urllib.request
@@ -11,11 +10,12 @@ import random
 
 
 def debug(*args):
-    print(args, sys.stderr)
+    if HackerRankConfig.debug: print(args, sys.stderr)
 
 
 class HackerRankConfig:
     hr_settings = sublime.load_settings("HackerRank.sublime-settings")
+    debug = hr_settings.get("Debug")
     compile_tests_url = "https://www.hackerrank.com/rest/contests/master/challenges/simple-array-sum/compile_tests"
     user_defined_cookie = hr_settings.get("Cookie")
     csrf_token = hr_settings.get("CSRF-Token")
@@ -47,6 +47,11 @@ class Utility:
     def get_random_number():
         return random.randint(10 ** 16, int(str("9" * HackerRankConfig.total_random_digits)))
 
+    def display(result):
+        result = json.loads(result)
+        print(result['model']['status_string'])
+    # result:  {"status":true,"model":{"id":35022010,"status":0,"challenge_id":9828,"contest_id":1,"hacker_id":119717,"kind":"code","actors":null,"status_string":"Compiling source code","trimmed_fields":[]}}
+
 
 class HackerRank:
 
@@ -64,6 +69,7 @@ class HackerRank:
         response = requests.get(url, params=params, headers=HackerRankConfig.user_headers)
         return response.text
 
+
 class RuncodeCommand(sublime_plugin.WindowCommand):
 
     def get_id(self, compile_response):
@@ -80,4 +86,5 @@ class RuncodeCommand(sublime_plugin.WindowCommand):
         compile_response = hr.send_code_to_server(code, HackerRankConfig.language)
         debug('compile_response: ', compile_response)
         result = hr.get_status_with_requests(self.get_id(compile_response))
-        print("result: ", result)
+        debug("result: ", result)
+        Utility.display(result)
