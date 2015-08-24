@@ -1,9 +1,11 @@
 import sys
 from .hackerrank_config import HackerRankConfig
 
+
 def debug(*args):
-    if HackerRankConfig.debug:
+    if HackerRankConfig().debug:
         print(args, sys.stderr)
+
 
 class Utility:
 
