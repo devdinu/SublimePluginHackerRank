@@ -22,3 +22,9 @@ class HackerRank:
         debug('id: ', id, "params: ", params, url)
         response = requests.get(url, params=params, headers=config.get_user_headers())
         return response.text
+
+    def submit_code_to_server(self, code):
+        config = HackerRankConfig()
+        postdata = {"code": code, "contest_slug": "master", "language": config.language}
+        response = requests.post(config.submission_url, data=json.dumps(postdata), headers=config.get_user_headers())
+        return response.text

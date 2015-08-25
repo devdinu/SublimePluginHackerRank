@@ -26,7 +26,11 @@ Run code from Sublime Text for HackerRank problems.
 
 # Compiling the code
 
-For Compiling and Checking Status via sublime, add the following to the Default (OS).sublime-keymap or Custom.sublime.keymap file.
+* For Compiling and Checking Status via sublime and submitting code, add the following to the Default (OS).sublime-keymap or Custom.sublime.keymap file.
 
- `{ "keys": ["super+shift+r"], "command": "runcode" }`
+ `{ "keys": ["super+shift+r"], "command": "runcode" },
+  { "keys": ["super+shift+h", "s"], "command": "submit" }`
 
+* Submit Functionality is enabled with super+shift+h, s. This feature submits the code without compilation or validation.
+
+* customize `Compile-Time" : 10` settings to wait after the compilation requests to view the status of compilation, Test results.
