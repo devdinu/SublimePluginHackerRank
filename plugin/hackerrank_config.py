@@ -10,13 +10,14 @@ class HackerRankConfig:
     def __init__(self):
         settings = sublime.load_settings("HackerRank.sublime-settings")
         self.debug = settings.get("Debug")
-        self.compile_tests_url = settings.get("Problem")
+        self.compile_tests_url = settings.get("Problem") + "/compile_tests"
+        self.submission_url = settings.get("Problem") + "/submissions?"
         self.language = settings.get("Language")
         self.user_headers = {'Cookie':  settings.get(
             "Cookie"), 'Content-Type': "application/json", 'X-CSRF-Token': settings.get("CSRF-Token")}
         self.compilation_time = settings.get("Compile-Time")
         self.lib_path = settings.get("Lib-Path")
-
+        self.required_values = settings.get("Required-Values")
 
     def get_user_headers(self):
         return self.user_headers.copy()

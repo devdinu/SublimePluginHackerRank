@@ -9,9 +9,9 @@ class HackerRank:
 
     def send_code_to_server(self, code):
         config = HackerRankConfig()
-        print('sending code', code, "language:", config.language)
         postdata = {"code": code, "language": config.language, "customtestcase": "false"}
         user_headers = config.get_user_headers()
+        debug('sending code', code, "language:", config.language, "url: ", config.compile_tests_url)
         resp = requests.post(config.compile_tests_url, data=json.dumps(postdata), headers=user_headers)
         return resp.text
 

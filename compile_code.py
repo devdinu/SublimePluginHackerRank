@@ -5,7 +5,8 @@ import time
 import sys
 from .plugin.hackerrank import HackerRank
 from .plugin.hackerrank_config import HackerRankConfig
-from .plugin.utility import debug
+from .plugin.utility import debug, Utility
+
 
 class RuncodeCommand(sublime_plugin.WindowCommand):
 
@@ -16,13 +17,12 @@ class RuncodeCommand(sublime_plugin.WindowCommand):
 
     def run(self, **kwargs):
         print("\n" * 100, "........Running code in hackerrank........", )
-        self.window.run_command("show_panel", {"panel": "console", "toggle": True})
-        c_view = self.window.active_view()
-        code = c_view.substr(sublime.Region(0, c_view.size()))
+        Utility.toggle_panel(self)
+        code = Utility.get_code(self)
         hr = HackerRank()
         compile_response = hr.send_code_to_server(code)
         debug('compile_response: ', compile_response)
         result = hr.get_status_with_requests(self.get_id(compile_response))
         time.sleep(HackerRankConfig().compilation_time)
         debug("result: ", result)
-        # Utility.display(result)
+        Utility.display(result)

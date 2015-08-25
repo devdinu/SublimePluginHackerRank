@@ -1,9 +1,11 @@
 import sublime
 import sublime_plugin
-from utility import Utility
+from .plugin.utility import Utility
+
 
 class SubmitCommand(sublime_plugin.WindowCommand):
 
     def run(self, **kwargs):
-        code = Utility.get_code(super)
+        Utility.toggle_panel(self)
+        code = Utility.get_code(self)
         debug("code:", code)
