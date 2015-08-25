@@ -1,0 +1,12 @@
+{
+   "name": "HackerRankHelper",
+   "details": "https://github.com/dineshkumar-cse/SublimePluginHackerRank",
+   "author": "Dinesh Kumar",
+   "releases": [
+	   {
+	           "sublime_text": ">=3000",
+	           "branch": "master",
+	           "tags": true
+	   }
+   ]
+}

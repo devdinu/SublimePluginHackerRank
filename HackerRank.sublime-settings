@@ -3,5 +3,7 @@
 	"CSRF-Token" : "Your-Token",
 	"Language" : "python", // Your Programming Language Default: python
 	"Problem" : "https://www.hackerrank.com/rest/contests/master/challenges/simple-array-sum/compile_tests",
-	"Debug" : true // whether to display debug statements
+	"Debug" : true, // whether to display debug statements
+	"Compile-Time" : 15,
+	"Required-Values" : ["hacker_id", "challenge_id", "status", "stdin", "stdout", "stderr", "testcase_message", "time"]
 }
